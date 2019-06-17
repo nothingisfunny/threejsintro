@@ -11,6 +11,7 @@ function init(){
   scene = new THREE.Scene();
   // set the background color
   scene.background = new THREE.Color('red');
+
   // create a camera
   const fov = 35; // field of view (valid range for the FOV is from 1 to 179 degrees)
   const aspect = container.clientWidth / container.clientHeight;
@@ -18,6 +19,7 @@ function init(){
   const far = 100; // the far clipping plane
 
   camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+  
   // every object is initially created at (0, 0, 0)
   // we'll move the camera back a bit so that we can view the scene
   camera.position.set(0, 0, 10);
@@ -51,22 +53,41 @@ function init(){
 
   // add the automatically created <canvas> element to the page
   container.appendChild(renderer.domElement);
+
+  renderer.setAnimationLoop( () => {
+    update();
+    render();
+  })
 }
 
-function animate(){
-  // call animate recursively
-  requestAnimationFrame(animate);
-
+function update(){
   // increase the mesh's rotation each frame
   mesh.rotation.z += 0.01;
   mesh.rotation.x += 0.01;
   mesh.rotation.y += 0.01;
+}
 
-  // render or 'create a still image' of the scene
+function render(){
   renderer.render(scene, camera);
 }
 
+// stop the loop:
+// renderer.setAnimationLoop( null );
+
+// handle device window resize
+function onWindowResize(){
+  // set the aspect ration to match the browser window
+  camera.aspect = container.clientWidth / container.clientHeight;
+
+  // update the camera's frustum
+  camera.updateProjectionMatrix();
+
+  // update the size of the renderer and the canvas 
+  renderer.setSize(container.clientWidth, container.clientHeight);
+}
+
+window.addEventListener('resize', onWindowResize);
+
 init();
-animate();
 
 
