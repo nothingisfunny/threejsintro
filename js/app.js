@@ -12,18 +12,43 @@ function init(){
   // set the background color
   scene.background = new THREE.Color('red');
 
-  // create a camera
-  const fov = 35; // field of view (valid range for the FOV is from 1 to 179 degrees)
-  const aspect = container.clientWidth / container.clientHeight;
-  const near = 0.1; // the near clipping plane
-  const far = 100; // the far clipping plane
+  createCamera();
+  createLights();
+  createMeshes();
+  createRenderer();
 
-  camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+  renderer.setAnimationLoop( () => {
+    update();
+    render();
+  })
+}
+
+function createCamera(){
+  // create a camera
+  camera = new THREE.PerspectiveCamera(
+    35, //FOV
+    container.clientWidth / container.clientHeight,
+    0.1, // near clipping plane
+    100 // far clipping plane
+  );
 
   // every object is initially created at (0, 0, 0)
   // we'll move the camera back a bit so that we can view the scene
   camera.position.set(0, 0, 10);
+};
 
+function createLights(){
+  //create a directional light
+  const light = new THREE.DirectionalLight( 0xffffff, 3.0);
+
+  //move the light back and up a bit
+  light.position.set(10, 10, 10);
+
+  //add the light to the scene
+  scene.add(light);
+};
+
+function createMeshes(){
   // create a geometry
   const geometry = new THREE.BoxBufferGeometry(2, 2, 2);
 
@@ -52,19 +77,11 @@ function init(){
 
   // add the mesh to the scene
   scene.add(mesh);
+};
 
-  //create a directional light
-  const light = new THREE.DirectionalLight( 0xffffff, 3.0);
-
-  //move the light back and up a bit
-  light.position.set(10, 10, 10);
-
-  //add the light to the scene
-  scene.add(light);
-
+function createRenderer(){
   // create the renderer
   renderer = new THREE.WebGLRenderer({ antialiasing: true });
-
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -75,23 +92,18 @@ function init(){
 
   // add the automatically created <canvas> element to the page
   container.appendChild(renderer.domElement);
-
-  renderer.setAnimationLoop( () => {
-    update();
-    render();
-  })
-}
+};
 
 function update(){
   // increase the mesh's rotation each frame
   mesh.rotation.z += 0.01;
   mesh.rotation.x += 0.01;
   mesh.rotation.y += 0.01;
-}
+};
 
 function render(){
   renderer.render(scene, camera);
-}
+};
 
 // stop the loop:
 // renderer.setAnimationLoop( null );
@@ -106,7 +118,7 @@ function onWindowResize(){
 
   // update the size of the renderer and the canvas 
   renderer.setSize(container.clientWidth, container.clientHeight);
-}
+};
 
 window.addEventListener('resize', onWindowResize);
 
