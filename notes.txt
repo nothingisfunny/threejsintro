@@ -1,0 +1,7 @@
+// Orbit Controls
+
+One thing to note about OrbitControls is that they steal your right-click function - the right mouse button is used to pan the camera whenever you hover over the canvas.
+
+It’s a bit annoying if you want to use right-click to open the browser console, but just remember that you can still use the shortcut CTRL + SHIFT + I instead, or CMD + SHIFT + I on a Mac.
+
+This is the main reason that we’re using the container as the control element, instead of letting it take over the whole window. By doing this, it means that we can add other HTML elements to our page and when the mouse is over them, click and touch events will work as expected. This makes for a less jarring experience for your users - the 3D parts of your page work like a 3D scene should, and the webpage parts work as a webpage should.

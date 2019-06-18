@@ -3,6 +3,7 @@ let camera;
 let renderer;
 let scene;
 let mesh;
+let controls;
 
 function init(){
 	// get a reference to the container element that will hold our scene
@@ -13,6 +14,7 @@ function init(){
   scene.background = new THREE.Color('red');
 
   createCamera();
+  createControls();
   createLights();
   createMeshes();
   createRenderer();
@@ -42,11 +44,15 @@ function createLights(){
   const light = new THREE.DirectionalLight( 0xffffff, 3.0);
 
   //move the light back and up a bit
-  light.position.set(10, 10, 10);
+  light.position.set(-4, -4, 10);
 
   //add the light to the scene
   scene.add(light);
 };
+
+function createControls(){
+  controls = new THREE.OrbitControls(camera, container)
+}
 
 function createMeshes(){
   // create a geometry
@@ -70,7 +76,7 @@ function createMeshes(){
   });
 
   // create a default (white) Basic material
-  // const material = new THREE.MeshStandardMaterial({ color: 'white' });
+    // const material = new THREE.MeshStandardMaterial({ color: 'white' });
 
   // create a Mesh containing the geometry and material
   mesh = new THREE.Mesh( geometry, material );
@@ -96,9 +102,9 @@ function createRenderer(){
 
 function update(){
   // increase the mesh's rotation each frame
-  mesh.rotation.z += 0.01;
-  mesh.rotation.x += 0.01;
-  mesh.rotation.y += 0.01;
+    // mesh.rotation.z += 0.01;
+    // mesh.rotation.x += 0.01;
+    // mesh.rotation.y += 0.01;
 };
 
 function render(){
