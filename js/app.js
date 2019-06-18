@@ -19,7 +19,7 @@ function init(){
   const far = 100; // the far clipping plane
 
   camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  
+
   // every object is initially created at (0, 0, 0)
   // we'll move the camera back a bit so that we can view the scene
   camera.position.set(0, 0, 10);
@@ -27,8 +27,25 @@ function init(){
   // create a geometry
   const geometry = new THREE.BoxBufferGeometry(2, 2, 2);
 
+  // create a texture loader
+  const textureLoader = new THREE.TextureLoader();
+
+  // load a texture
+  const texture = textureLoader.load('./textures/putin-wink.jpg');
+
+  //set the "color space" of the texture
+  texture.encoding = THREE.sRGBEncoding;
+
+  // reduce blurring at glancing angles
+  texture.anisotropy = 16;
+
+  // create a Standard material using the texture we loaded as a color map
+  const material = new THREE.MeshStandardMaterial({
+    map: texture,
+  });
+
   // create a default (white) Basic material
-  const material = new THREE.MeshStandardMaterial({ color: 'white' });
+  // const material = new THREE.MeshStandardMaterial({ color: 'white' });
 
   // create a Mesh containing the geometry and material
   mesh = new THREE.Mesh( geometry, material );
@@ -37,7 +54,7 @@ function init(){
   scene.add(mesh);
 
   //create a directional light
-  const light = new THREE.DirectionalLight( 0xffffff, 5.0);
+  const light = new THREE.DirectionalLight( 0xffffff, 3.0);
 
   //move the light back and up a bit
   light.position.set(10, 10, 10);
@@ -50,6 +67,11 @@ function init(){
 
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
+
+  // set the gamma correction so that the output colors look
+  // correct on the screens
+  renderer.gammaFactor = 2.2;
+  renderer.gammaOutput = true;
 
   // add the automatically created <canvas> element to the page
   container.appendChild(renderer.domElement);
