@@ -40,14 +40,16 @@ function createCamera(){
 };
 
 function createLights(){
-  //create a directional light
-  const light = new THREE.DirectionalLight( 0xffffff, 3.0);
+  const ambientLight = new THREE.HemisphereLight(
+    0xddeeff, // sky color
+    0x202020, // ground color
+    5, // intensity
+  );
 
-  //move the light back and up a bit
-  light.position.set(-4, -4, 10);
+  const mainLight = new THREE.DirectionalLight( 0xffffff, 5 );
+  mainLight.position.set( 10, 10, 10 );
 
-  //add the light to the scene
-  scene.add(light);
+  scene.add( ambientLight, mainLight );
 };
 
 function createControls(){
@@ -95,6 +97,7 @@ function createRenderer(){
   // correct on the screens
   renderer.gammaFactor = 2.2;
   renderer.gammaOutput = true;
+  renderer.physicallyCorrectLights = true;
 
   // add the automatically created <canvas> element to the page
   container.appendChild(renderer.domElement);

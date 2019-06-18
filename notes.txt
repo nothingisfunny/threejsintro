@@ -1,3 +1,6 @@
+// Start Python simple server
+python -m SimpleHTTPServer   
+
 // Orbit Controls
 
 One thing to note about OrbitControls is that they steal your right-click function - the right mouse button is used to pan the camera whenever you hover over the canvas.
